@@ -25,9 +25,6 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @PostMapping("/login")
     public JwtResponse login(@RequestBody LoginRequest request) {
         User user;
