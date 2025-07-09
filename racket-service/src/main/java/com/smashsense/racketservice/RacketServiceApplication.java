@@ -1,9 +1,9 @@
-package com.example.racket_service;
+package com.smashsense.racketservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = "com.example.racket_service")
+@SpringBootApplication(scanBasePackages = "com.smashsense.racketservice")
 public class RacketServiceApplication {
 
 	public static void main(String[] args) {

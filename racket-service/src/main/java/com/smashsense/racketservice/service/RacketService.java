@@ -24,11 +24,11 @@ public class RacketService {
                 .collect(Collectors.toList());
     }
 
-    public RacketDTO getRacketById(Long id) {
+    public List<RacketDTO> getRacketById(Long id) {
         Racket racket = racketRepository.findById(id)
                 .orElseThrow(() -> new RacketNotFoundException("Racket Not Found"));
 
-        return mapToDTO(racket);
+        return List.of(mapToDTO(racket));
     }
 
     public List<RacketDTO> getRacketByBrand(String brand) {
@@ -41,8 +41,12 @@ public class RacketService {
         return mapToDTO(racketRepository.save(racket));
     }
 
-    public void deleteRacket(Long id) {
+    public String deleteRacket(Long id) {
+        if (!racketRepository.existsById(id)) {
+            throw new RacketNotFoundException("Racket not found with id: " + id);
+        }
         racketRepository.deleteById(id);
+        return "Racket deleted successfully.";
     }
 
     // Helper Functions

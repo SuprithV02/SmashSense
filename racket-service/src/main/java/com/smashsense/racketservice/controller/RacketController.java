@@ -11,13 +11,18 @@ import com.smashsense.racketservice.service.RacketService;
 @RestController
 @RequestMapping("/rackets")
 public class RacketController {
-    
+
     @Autowired
     private RacketService racketService;
 
-    @GetMapping("/{id}")
-    public List<RacketDTO> getAllRackets(@PathVariable Long id) {
+    @GetMapping
+    public List<RacketDTO> getAllRackets() {
         return racketService.getAllRackets();
+    }
+
+    @GetMapping("/{id}")
+    public List<RacketDTO> getRacketsById(@PathVariable Long id) {
+        return racketService.getRacketById(id);
     }
 
     @GetMapping("/brand/{brand}")
@@ -29,10 +34,10 @@ public class RacketController {
     public RacketDTO addRacket(@RequestBody RacketDTO racketDTO) {
         return racketService.addRacket(racketDTO);
     }
-    
+
     @DeleteMapping("/{id}")
-    public void deleteRacket(@PathVariable Long id) {
-        racketService.deleteRacket(id);
+    public String deleteRacket(@PathVariable Long id) {
+        return racketService.deleteRacket(id);
     }
 
 }
