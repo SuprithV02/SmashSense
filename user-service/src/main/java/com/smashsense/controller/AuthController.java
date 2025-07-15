@@ -2,7 +2,6 @@ package com.smashsense.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +28,7 @@ public class AuthController {
     public JwtResponse login(@RequestBody LoginRequest request) {
         User user;
         try {
-            user = userService.findByUsername(request.getUsername());
+            user = userService.findByUsername(request.getUsername()); // We can use this as the setters and getters are pre written
         } catch (RuntimeException e) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid credentials");
         }
