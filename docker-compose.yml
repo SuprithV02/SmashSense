@@ -1,0 +1,66 @@
+version: "3.8"
+
+services: 
+  user-db:
+    image: postgres:17
+    container_name: user-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: smashsense_user_db
+
+    ports:
+      - "5432:5432"
+    volumes:
+      - user-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  
+  racket-db:
+    image: postgres:17
+    container_name: racket-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: smashsense_racket_db
+
+    ports:
+      - "5433:5432"
+    volumes:
+      - racket-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    depends_on:
+      - user-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5432/smashsense_user_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8081:8081"
+  
+  racket-service:
+    build: ./racket-service
+    container_name: racket-service
+    depends_on:
+      - racket-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://racket-db:5432/smashsense_racket_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8082:8082"
+
+volumes:
+  user-db-data:
+  racket-db-data:
